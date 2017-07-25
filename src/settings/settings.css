@@ -1,0 +1,12 @@
+.settingsPanel {
+    border: 1px solid lightgrey;
+    border-radius: 10px;
+    margin-top: 20px;
+    padding: 4px 10px;
+    display: inline-block;
+}
+
+.boardSizeInput {
+    margin-left: 5px;
+    width: 2rem;
+}
