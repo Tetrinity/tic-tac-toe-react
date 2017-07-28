@@ -3,6 +3,7 @@ import { mount } from "enzyme";
 import Game from "./Game";
 import Board from "./Board";
 import Square from "./Square";
+import GameInfo from './info/GameInfo'
 import SettingsPanel from '../settings/settings';
 
 describe("Game", () => {
@@ -34,6 +35,17 @@ describe("Game", () => {
         expect(props.boardSize).toBe(3);
     })
 
+    it("should render the GameInfo component", () => {
+        const info = game().find(GameInfo);
+
+        const props = info.props();
+        expect(props.winner).toBeNull();
+        expect(props.xToPlay).toBeTruthy();
+        expect(props.history).toBeInstanceOf(Array);
+        expect(props.stepNumber).toBe(0);
+        expect(props.jumpTo).toBeInstanceOf(Function);
+    })
+
     it("should render the Settings Panel with default values", () => {
         const panel = game().find(SettingsPanel)
 
@@ -42,6 +54,7 @@ describe("Game", () => {
         expect(props.onBoardSizeChange).toBeInstanceOf(Function);
     })
 
+    // TODO: move these to the GameInfo tests
     describe("game-info", () => {
         it("should display the next player to move", () => {
             const gameInfoPanel = game().find("div.game-info")

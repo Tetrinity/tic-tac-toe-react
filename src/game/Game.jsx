@@ -1,5 +1,6 @@
 import React from 'react';
 import Board from './Board'
+import GameInfo from './info/GameInfo';
 import SettingsPanel from '../settings/settings.js';
 
 class Game extends React.Component {
@@ -14,12 +15,8 @@ class Game extends React.Component {
             }],
             stepNumber: 0,
             xToPlay: true,
-            moveListAsc: true,
             boardSize: defaultBoardSize
         }
-
-        // necessary to make "this" work in the callback
-        this.toggleMoveListOrder = this.toggleMoveListOrder.bind(this);
     }
 
     handleClick(i){
@@ -40,19 +37,13 @@ class Game extends React.Component {
         });
     }
 
-    toggleMoveListOrder(){
-        this.setState({
-            moveListAsc: !this.state.moveListAsc
-        });
-    }
-
-    jumpTo(step){
+    jumpToStep(step){
         this.setState({
             stepNumber: step,
             xToPlay: (step % 2) === 0
         })
     }
-
+    
     handleBoardSizeChange(newSize){
         // reset game
         this.setState({
@@ -68,7 +59,7 @@ class Game extends React.Component {
     calculateWinner(squares, boardSize){
         const winningSquares = this.getWinningSquares(squares, boardSize);
 
-        if (winningSquares){ return squares[winningSquares[0]]; }
+        if (winningSquares.length > 0){ return squares[winningSquares[0]]; }
         else { return null; }
     }
 
@@ -131,29 +122,7 @@ class Game extends React.Component {
         const history = this.state.history;
         const currentPosition = history[this.state.stepNumber];
         const winner = this.calculateWinner(currentPosition.squares, this.state.boardSize);
-
-        const moves = history.map((step, move) => {
-            const description = move ? "Move #" + move : "Game\u00a0start";
-            const isSelected = (move === this.state.stepNumber);
-
-            return (
-                <li key={move} className={isSelected ? 'selectedStep' : null}>
-                    <a href="#" onClick={() => this.jumpTo(move)}>{description}</a>
-                </li>
-            );
-        });
-
-        if (!this.state.moveListAsc){
-            moves.reverse()
-        }
-
-        var status;
-        if (winner){
-            status = "Winner: " + winner;
-        } else {
-            status = 'Next player: ' + (this.state.xToPlay ? 'X' : 'O');
-        } 
-
+        
         return (
             <div>
                 <div className="game">
@@ -165,12 +134,13 @@ class Game extends React.Component {
                             boardSize={this.state.boardSize}
                         />
                     </div>
-                    {/* TODO: pull game-info out into new component */}
-                    <div className="game-info">
-                        <div className="game-status">{status}</div>
-                        <ol>{moves}</ol>
-                        <button onClick={this.toggleMoveListOrder}>Toggle Move Order</button>
-                    </div>
+                    <GameInfo
+                        winner={winner}
+                        xToPlay={this.state.xToPlay}
+                        history={this.state.history}
+                        stepNumber={this.state.stepNumber}
+                        jumpTo={(stepNumber) => this.jumpToStep(stepNumber)}
+                    />
                 </div>
                 
                 <div className="game-settings">
