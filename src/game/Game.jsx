@@ -1,7 +1,7 @@
 import React from 'react';
 import Board from './Board'
 import GameInfo from './info/GameInfo';
-import SettingsPanel from '../settings/settings.js';
+import SettingsPanel from '../settings/SettingsPanel';
 
 class Game extends React.Component {
 

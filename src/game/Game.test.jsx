@@ -4,7 +4,7 @@ import Game from "./Game";
 import Board from "./Board";
 import Square from "./Square";
 import GameInfo from './info/GameInfo'
-import SettingsPanel from '../settings/settings';
+import SettingsPanel from '../settings/SettingsPanel';
 
 describe("Game", () => {
     let props;
