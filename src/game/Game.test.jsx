@@ -53,30 +53,4 @@ describe("Game", () => {
         expect(props.boardSize).toBe(3);
         expect(props.onBoardSizeChange).toBeInstanceOf(Function);
     })
-
-    // TODO: move these to the GameInfo tests
-    describe("game-info", () => {
-        it("should display the next player to move", () => {
-            const gameInfoPanel = game().find("div.game-info")
-            const gameStatus = gameInfoPanel.find("div.game-status")
-
-            expect(gameStatus.text()).toEqual("Next player: X")
-
-            const square = game().find(Square).first();
-            square.simulate("click")
-
-            expect(gameStatus.text()).toEqual("Next player: O")
-        })
-
-        it("should display the winner if the game is over", () => {
-            const gameInfoPanel = game().find("div.game-info")
-            const gameStatus = gameInfoPanel.find("div.game-status")
-
-            mountedGame.setState({ history: [{
-                squares: ["X", "X", "X", "O", null, "O", null, null, null]
-            }]})
-
-            expect(gameStatus.text()).toEqual("Winner: X")
-        })
-    })
 });
