@@ -24,7 +24,7 @@ class Game extends React.Component {
         const currentPosition = history[history.length - 1];
         const squares = currentPosition.squares.slice();
         const winner = this.calculateWinner(squares, this.state.boardSize);
-        if (winner || squares[i]){ return; } // if game is over or this square has already been used
+        if (winner || squares[i]){ return false; } // if game is over or this square has already been used
 
         squares[i] = this.state.xToPlay ? 'X' : 'O';
 
@@ -35,6 +35,8 @@ class Game extends React.Component {
             stepNumber: history.length,
             xToPlay: !this.state.xToPlay
         });
+
+        return true;
     }
 
     jumpToStep(step){

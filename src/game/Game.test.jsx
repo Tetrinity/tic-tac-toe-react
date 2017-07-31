@@ -53,4 +53,87 @@ describe("Game", () => {
         expect(props.boardSize).toBe(3);
         expect(props.onBoardSizeChange).toBeInstanceOf(Function);
     })
+
+    describe("handleClick", () => {
+        it("should bail out if the game is over", () => {
+            game()
+
+            mountedGame.setState({
+                history: [{
+                    squares: [
+                        "X", "X", "X",
+                        "O", null, null,
+                        null, "O", null
+                    ]
+                }],
+                stepNumber: 0,
+                boardSize: 3,
+                xToPlay: true
+            })
+
+            expect(mountedGame.instance().handleClick(5)).toBeFalsy()
+        })
+
+        it("should bail out if the clicked square is already occupied", () => {
+            game()
+
+            mountedGame.setState({
+                history: [{
+                    squares: [
+                        "X", null, null,
+                        "O", null, null,
+                        null, "X", null
+                    ]
+                }],
+                stepNumber: 0,
+                boardSize: 3,
+                xToPlay: true
+            })
+
+            expect(mountedGame.instance().handleClick(3)).toBeFalsy()
+        })
+
+        it("should mark the clicked square in a new history entry based on whose turn it is to play", () => {
+            game()
+
+            mountedGame.setState({
+                history: [{
+                    squares: [
+                        "X", null, null,
+                        "O", null, null,
+                        null, "X", null
+                    ]
+                }],
+                stepNumber: 0,
+                boardSize: 3,
+                xToPlay: false
+            })
+
+            expect(mountedGame.instance().handleClick(5)).toBeTruthy()
+
+            expect(mountedGame.state().history.length).toBe(2)
+            expect(mountedGame.state().stepNumber).toBe(1)
+            expect(mountedGame.state().history[1].squares[5]).toEqual("O")
+        })
+
+        it("should toggle whose turn it is to play", () => {
+            game()
+
+            mountedGame.setState({
+                history: [{
+                    squares: [
+                        "X", null, null,
+                        "O", null, null,
+                        null, "X", null
+                    ]
+                }],
+                stepNumber: 0,
+                boardSize: 3,
+                xToPlay: false
+            })
+
+            expect(mountedGame.instance().handleClick(5)).toBeTruthy()
+            expect(mountedGame.state().xToPlay).toBeTruthy()
+        })
+    })
 });
