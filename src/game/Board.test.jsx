@@ -48,4 +48,19 @@ describe("Board", () => {
         props.boardSize = 7;
         expect(board().find(".board-row").length).toBe(7)
     })
+
+    it("should pass the correct props to each Square", () => {
+        const mockOnClick = jest.fn()
+        props.onClick = mockOnClick;
+
+        const squares = board().find(Square)
+
+        squares.at(0).simulate("click")
+        squares.at(4).simulate("click")
+        squares.at(7).simulate("click")
+        
+        expect(mockOnClick.mock.calls[0]).toEqual([0])
+        expect(mockOnClick.mock.calls[1]).toEqual([4])
+        expect(mockOnClick.mock.calls[2]).toEqual([7])
+    })
 })
