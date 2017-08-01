@@ -1,7 +1,7 @@
 import React from 'react';
 import './settings.css';
 
-class SettingsPanel extends React.Component {
+class SettingsPanel extends React.PureComponent {
 
     handleBoardSizeChange(event){
         var newSize = parseInt(event.target.value);
